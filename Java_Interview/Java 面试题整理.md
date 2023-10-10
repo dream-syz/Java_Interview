@@ -22,7 +22,7 @@
 
 **面向过程**：是分析解决问题的步骤，然后用函数把这些步骤一步一步地实现，然后在使用的时候一一调用则可。性能较高，所以单片机、嵌入式开发等一般采用面向过程开发
 
-**面向对象**：是把构成问题的事务分解成各个对象，而建立对象的目的也不是为了完成一个个步骤，而是为了描述某个事物在解决整个问题的过程中所发生的行为。面向对象有**封装、继承、多态**的特性，所以易维护、易复用、易扩展。可以设计出低耦合的系统。 但是性能上来说，比面向过程要低。
+**面向对象**：是把构成问题的事务分解成各个对象，而建立对象的目的也不是为了完成一个个步骤，而是为了描述某个事物在解决整个问题的过程中所发生的行为。面向对象有 **封装、继承、多态** 的特性，所以易维护、易复用、易扩展。可以设计出低耦合的系统。 但是性能上来说，比面向过程要低。
 
 
 
@@ -363,7 +363,7 @@ int c[] = {23,43,56,78};//长度：4，索引范围：[0,3]
 
 **ArrayList 的 asList 方法返回一个列表**
 
-ArrayList底层的实现是Array, 数组扩容实现
+ArrayList底层的实现是 Array, 数组扩容实现
 
 **LinkList 是一个双链表 ，在添加和删除元素时具有比 ArrayList 更好的性能；但在 get 与 set 方面弱于ArrayList。当然，这些对比都是指数据量很大或者操作很频繁。**
 
@@ -375,43 +375,29 @@ HashTable 是 java 一开始发布时就提供的键值映射的数据结构，�
 
 #### 1、两者父类不同
 
-HashMap 是继承自 AbstractMap 类，而 HashTable 是继承自 Dictionary 类。不过它们都实现了同时
-
-实现了 map、Cloneable（可复制）、Serializable（可序列化）这三个接口。
+HashMap 是继承自 AbstractMap 类，而 HashTable 是继承自 Dictionary 类。不过它们同时实现了 map、Cloneable（可复制）、Serializable（可序列化）这三个接口。
 
 #### 2、对外提供的接口不同
 
-HashTable 比 HashMap 多提供了 elments() 和 contains() 两个方法。elments() 方法继承自
+HashTable 比 HashMap 多提供了 elments() 和 contains() 两个方法。elments() 方法继承自 HashTable 的父类 Dictionnary。elements() 方法用于返回此 HashTable 中的 value 的枚举。
 
-HashTable 的父类 Dictionnary。elements() 方法用于返回此 HashTable 中的 value 的枚举。
-
-contains() 方法判断该 HashTable 是否包含传入的 value。它的作用与 containsValue() 一致。事实
-
-上，contansValue() 就只是调用了一下 contains() 方法。
+contains() 方法判断该 HashTable 是否包含传入的 value。它的作用与 containsValue() 一致。事实上，contansValue() 就只是调用了一下 contains() 方法。
 
 #### 3、对 null 的支持不同
 
 Hashtable：key 和 value 都不能为 null。
 
-HashMap：key 可以为 null，但是这样的 key 只能有一个，因为必须保证 key 的唯一性；可以有多个
-
-key值对应的 value 为 null。
+HashMap：key 可以为 null，但是这样的 key 只能有一个，因为必须保证 key 的唯一性；可以有多个 key 值对应的 value 为 null。
 
 #### 4、安全性不同
 
-HashMap 是线程不安全的，在多线程并发的环境下，可能会产生死锁等问题，因此需要开发人员自
+HashMap 是线程不安全的，在多线程并发的环境下，可能会产生死锁等问题，因此需要开发人员自己处理多线程的安全问题。
 
-己处理多线程的安全问题。
+Hashtable 是线程安全的，它的每个方法上都有 synchronized  关键字，因此可直接用于多线程中。
 
-Hashtable是线程安全的，它的每个方法上都有 synchronized  关键字，因此可直接用于多线程中。
+虽然 HashMap 是线程不安全的，但是它的效率远远高于 Hashtable，这样设计是合理的，因为大部分的使用场景都是单线程。当需要多线程操作的时候可以使用线程安全的 ConcurrentHashMap 。
 
-虽然 HashMap是线程不安全的，但是它的效率远远高于 Hashtable，这样设计是合理的，因为大部
-
-分的使用场景都是单线程。当需要多线程操作的时候可以使用线程安全的 ConcurrentHashMap 。
-
-ConcurrentHashMap 虽然也是线程安全的，但是它的效率比Hashtable要高好多倍。因为
-
-ConcurrentHashMap 使用了分段锁，并不对整个数据进行锁定。
+ConcurrentHashMap 虽然也是线程安全的，但是它的效率比Hashtable要高好多倍。因为 ConcurrentHashMap 使用了分段锁，并不对整个数据进行锁定。
 
 
 
@@ -465,7 +451,7 @@ HashMap 的初始容量为：16，Hashtable 初始容量为：11，两者的负�
 - HashMap 每次扩充，容量变为原来的 2 倍（ 2 n ）；
 - HashTable 每次扩充，容量会变为原来的 2 倍 + 1（ 2 n + 1 ）；
 
-下面给出HashMap中的源码：
+下面给出 HashMap 中的源码：
 
 ```java
     /**
@@ -517,7 +503,7 @@ HashMap中的源码：
 
 #### 6、计算 hash 值的方法不同
 
-为了得到元素的位置，首先需要根据元素的 KEY 计算出一个hash值，然后再用这个 hash 值来计算得到最终的位置。
+为了得到元素的位置，首先需要根据元素的 KEY 计算出一个 hash 值，然后再用这个 hash 值来计算得到最终的位置。
 
 Hashtable 中 hash 的计算方法为：直接使用对象的 hashCode()。
 HashMap 中 hash 的计算方法为：key 的 hash 值高 16 位不变，低 16 位与高 16 位异或作为 key 最终的 hash 值。（h>>>16，表示无符号右移 16 位，高位补 0 ）
@@ -610,9 +596,9 @@ HashMap 的效率虽然提高了，但是 hash 冲突却也增加了。因为它
 
 #### 7. 迭代器内部实现不同
 
-Hashtable、HashMap都使用了 Iterator。Hashtable还使用了Enumeration的方式 。
+Hashtable、HashMap 都使用了 Iterator。Hashtable 还使用了 Enumeration 的方式 。
 
-Hashtable中的 Enumerator类，实现了Enumeration接口和Iterator接口：
+Hashtable中 的 Enumerator 类，实现了 Enumeration 接口和 Iterator 接口：
 
 ```java
     /**
@@ -831,9 +817,7 @@ SoftReference<String> wrf = new SoftReference<String>(new String("str"));
 
 #### 3、弱引用
 
-弱引用就是只要 JVM 垃圾回收器发现了它，就会将之回收，他的强度比软引用更低一点，弱引用的对象下一次 GC
-
-的时候一定会被回收，而不管内存是否足够。使用方式：
+弱引用就是只要 JVM 垃圾回收器发现了它，就会将之回收，他的强度比软引用更低一点，弱引用的对象下一次 GC 的时候一定会被回收，而不管内存是否足够。使用方式：
 
 ```java
 WeakReference<String> wrf = new WeakReference<String>(str);
@@ -1027,6 +1011,18 @@ public void function() {
 - 开放定址法：一旦发生了冲突,就去寻找下一个空的散列地址，只要散列表足够大，空的散列地址总能找到，并将记录存入
 - 再哈希：又叫双哈希法，有多个不同的 Hash 函数。当发生冲突时，使用第二个，第三个….等哈希函数计算地址，直到无冲突
 
+#### 为什么 java 的指针压缩：
+
+在 Java 中，指针压缩（Pointer Compression）是一种优化技术，用于减少对象指针的内存占用和提高内存访问效率。
+
+在 32 位的 Java 虚拟机中，每个对象引用（指针）通常占用4字节的内存空间。然而，在实际的应用程序中，大部分的堆对象的内存地址范围并不需要使用整个 32 位空间。因此，指针压缩的目标是通过缩小指针的有效位数来减少内存消耗。
+
+指针压缩的具体实现方式是通过将堆对象的内存地址空间划分为几个区域，其中一部分用于存储对象的数据，另一部分用于存储指针。指针压缩将指针的有效位数缩小，从而减少了指针的内存占用。例如，可以将指针大小压缩到3字节或2字节。
+
+指针压缩的好处是可以减少内存消耗，并且在一定程度上提高内存访问效率。较小的指针大小意味着可以在更短的时间内读取或写入指针所指向的对象。此外，指针压缩还可以减少垃圾回收器的工作量，提高垃圾回收的效率。
+
+需要注意的是，指针压缩只在 32 位的 Java 虚拟机中有效，因为在 64 位的虚拟机中，由于地址空间的扩展，指针大小通常为 8 字节，已经足够存储大量的对象引用。
+
 #### 哈希冲突的产生原因及解决方法
 
 ##### 哈希冲突的产生
@@ -1071,7 +1067,7 @@ public void function() {
 
 ###### 2、链地址法（拉链法：**HashMap 的哈希冲突解决方法**）
 
-基本思想：以数组为基本单元，将所有的哈希地址为i的元素构成一个称为同义词链的单链表，并将单链表的头指针存在哈希表的第 i 个单元中，因而查找、插入和删除主要在同义词链中进行。
+基本思想：以数组为基本单元，将所有的哈希地址为 i 的元素构成一个称为同义词链的单链表，并将单链表的头指针存在哈希表的第 i 个单元中，因而查找、插入和删除主要在同义词链中进行。
 
 链地址法适用于经常进行插入和删除的情况。
 
@@ -1141,7 +1137,7 @@ public calss PreCache{
 
 此外 static 也多用于修饰内部类,此时称之为静态内部类
 
-最后一种用法就是静态导包，即 `import static` .import static是在 JDK 1.5 之后引入的新特性,可以用来指定导入某个类中的静态资源,并且不需要使用类名,可以直接使用资源名，比如：
+最后一种用法就是静态导包，即 `import static` .import static是在  JDK 1.5 之后引入的新特性，可以用来指定导入某个类中的静态资源,并且不需要使用类名,可以直接使用资源名，比如：
 
 ```java
 import static java.lang.Math.*;
@@ -1254,7 +1250,7 @@ SQLException
 
 OutOfMemoryError、ThreadDeath。
 
-Java虚拟机规范规定JVM的内存分为了好几块，比如堆，栈，程序计数器，方法区等
+Java 虚拟机规范规定 JVM 的内存分为了好几块，比如堆，栈，程序计数器，方法区等
 
 
 
@@ -1384,7 +1380,7 @@ Class.forName('com.mysql.jdbc.Driver.class');//加载 MySQL 的驱动类
 
 #### 4、实现 Java 反射的类：
 
-1）Class：表示正在运行的Java应用程序中的类和接口。注意： 所有获取对象的信息都需要 Class 类来实现。 
+1）Class：表示正在运行的 Java 应用程序中的类和接口。注意： 所有获取对象的信息都需要 Class 类来实现。 
 
 2）Field：提供有关类和接口的属性信息，以及对它的动态访问权限。 
 
@@ -2098,7 +2094,7 @@ GChisto，一款专业分析 gc 日志的工具
 
 -XX:+PrintGCDetails 打印 GC 详细信息
 
--XX:+HeapDumpOnOutOfMemoryError 让 JVM 在发生内存溢出的时候自动生成内存快照,排查问题用
+-XX:+HeapDumpOnOutOfMemoryError 让 JVM 在发生内存溢出的时候自动生成内存快照，排查问题用
 
 -XX:+DisableExplicitGC 禁止系统 System.gc()，防止手动误触发 FGC 造成问题.
 
@@ -2222,7 +2218,7 @@ JVM 包含两个子系统和两个组件，分别为
 
 ### 25、什么是指针碰撞？
 
-一般情况下，JVM 的对象都放在堆内存中（发生逃逸分析除外）。当类加载检查通过后，Java 虚拟机开始为新生对象分配内存。如果 Java 堆中内存是绝对规整的，所有被使用过的的内存都被放到一边，空闲的内存放到另外一边，中间放着一个指针作为分界点的指示器，所分配内存仅仅是把那个指针向空闲空间方向挪动一段与对象大小相等的实例，这种分配方式就是 指针碰撞。
+一般情况下，JVM 的对象都放在堆内存中（发生逃逸分析除外）。当类加载检查通过后，Java 虚拟机开始为新生对象分配内存。如果 Java 堆中内存是绝对规整的，所有被使用过的的内存都被放到一边，空闲的内存放到另外一边，中间放着一个指针作为分界点的指示器，所分配内存仅仅是把那个指针向空闲空间方向挪动一段与对象大小相等的实例，这种分配方式就是 **指针碰撞**。
 
 ![image-20230816094955691](https://dream-syz.github.io/2-16.png)
 
@@ -2331,7 +2327,7 @@ JVM 包含两个子系统和两个组件，分别为
 
 ![](https://dream-syz.github.io/2-19.png)
 
-当 tomca t启动时，会创建几种类加载器： **Bootstrap** **引导类加载器** 加载 JVM 启动所需的类，以及标准扩展类（位于 `jre/lib/ext` 下） **System** **系统类加载器** 加载 tomcat 启动的类，比如 bootstrap.jar，通常在 catalina.bat 或者 `catalina.sh` 中指定。位于 `CATALINA_HOME/bin` 下。
+当 tomcat 启动时，会创建几种类加载器： **Bootstrap** **引导类加载器** 加载 JVM 启动所需的类，以及标准扩展类（位于 `jre/lib/ext` 下） **System** **系统类加载器** 加载 tomcat 启动的类，比如 bootstrap.jar，通常在 catalina.bat 或者 `catalina.sh` 中指定。位于 `CATALINA_HOME/bin` 下。
 
 ![](https://dream-syz.github.io/2-20.png)
 
@@ -3092,6 +3088,45 @@ BlockingQueue 接口是 Queue 的子接口，它的主要用途并不是作为�
 总之，CopyOnWriteArrayList 适合于读多写少，读优先的场景，需要更新频率较低的数据，而且有运行效率限制的场景。因为它的底层实现方式比较特殊，它的读性能非常高，而写性能相对较差。对于需要快速修改的应用场景，可以考虑使用其他的 List 类来替代 CopyOnWriteArrayList 。
 
 
+
+### 47、说说线程池的常用构建方式
+
+在Java中，可以使用`ExecutorService`接口来创建线程池。`ExecutorService`是`Executor`的子接口，它提供了更多的方法来管理和控制线程池的执行。
+
+以下是几种常见的建立线程池的方式：
+
+1. 使用`Executors`类的静态方法创建线程池：
+```java
+ExecutorService executor = Executors.newFixedThreadPool(10); // 创建固定大小的线程池，最多同时执行10个任务
+ExecutorService executor = Executors.newSingleThreadExecutor(); // 创建单个线程的线程池
+ExecutorService executor = Executors.newCachedThreadPool(); // 创建可缓存的线程池，根据需要自动调整线程数量
+```
+
+2. 使用`ThreadPoolExecutor`类的构造函数创建线程池：
+```java
+int corePoolSize = 10; // 核心线程数
+int maximumPoolSize = 20; // 最大线程数
+long keepAliveTime = 60; // 线程空闲时间
+TimeUnit unit = TimeUnit.SECONDS; // 空闲时间的单位
+
+ExecutorService executor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit,
+        new LinkedBlockingQueue<>()); // 创建自定义的线程池，使用有界队列作为任务队列
+```
+
+3. 使用`ThreadPoolExecutor`类的`ThreadPoolExecutor.AbortPolicy`等内置拒绝策略创建线程池：
+```java
+int corePoolSize = 10; // 核心线程数
+int maximumPoolSize = 20; // 最大线程数
+long keepAliveTime = 60; // 线程空闲时间
+TimeUnit unit = TimeUnit.SECONDS; // 空闲时间的单位
+BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>(); // 任务队列
+RejectedExecutionHandler handler = new ThreadPoolExecutor.AbortPolicy(); // 拒绝策略
+
+ExecutorService executor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit,
+        workQueue, handler); // 创建自定义的线程池，指定拒绝策略
+```
+
+以上是几种常见的建立线程池的方式，根据具体的需求选择适合的方式来创建线程池。
 
 
 
@@ -6955,7 +6990,7 @@ Redis 是一个开源（BSD 许可）、基于内存、支持多种数据结构�
 
 1. **纯内存 KV 操作**
 
-Redis的操作都是基于内存的，CPU不是 Redis 性能瓶颈,，Redis 的瓶颈是机器内存和网络带宽。
+Redis 的操作都是基于内存的，CPU不是 Redis 性能瓶颈,，Redis 的瓶颈是机器内存和网络带宽。
 
 在计算机的世界中，CPU 的速度是远大于内存的速度的，同时内存的速度也是远大于硬盘的速度。Redis 的操作都是基于内存的，绝大部分请求是纯粹的内存操作，非常迅速。
 
@@ -6971,9 +7006,80 @@ Redis 单线程指的是网络请求模块使用了一个线程，即一个线�
 
 首先，Redis 是跑在单线程中的，所有的操作都是按照顺序线性执行的，但是由于读写操作等待用户输入或输出都是阻塞的，所以 I/O 操作在一般情况下往往不能直接返回，这会导致某一文件的 I/O 阻塞导致整个进程无法对其它客户提供服务，而 I/O 多路复用就是为了解决这个问题而出现的
 
+#### 如何实现IO多路复用？
+
+##### 在  Java 中，可以使用以下三种方式来实现 IO 多路复用：
+
+1. 使用 Selector 和 Channel：Java NIO 提供了 Selector 和 Channel 的机制，可以实现 IO 多路复用。Selector 是一个选择器，通过它可以注册多个 Channel，并监听这些 Channel 上的事件。当某个 Channel 上有读或写事件发生时，Selector 会通知应用程序进行相应的处理。这样就可以使用单个线程来处理多个 Channel，实现 IO 的多路复用。具体步骤如下：
+   - 创建 Selector 对象。
+   - 将需要进行 IO 操作的 Channel 注册到 Selector上，可以通过调用 Channel 的 register() 方法来实现。
+   - 调用 Selector 的 select() 方法进行阻塞，等待事件发生。
+   - 当有事件发生时，通过调用Selector的selectedKeys()方法获取到发生事件的Channel集合。
+   - 遍历事件集合，根据事件类型进行相应的处理。
+
+2. 使用 `java.nio.channels.Selector` 类：Java NIO 提供了 Selector 类，可以实现 IO 多路复用。具体步骤如下：
+   - 创建 Selector 对象。
+   - 将需要进行 IO 操作的 Channel 注册到 Selector 上，可以通过调用 Channel 的 configureBlocking(false) 方法将 Channel 设置为非阻塞模式，然后调用 Selector 的 register() 方法将 Channel 注册到 Selector 上。
+   - 调用 Selector 的 select() 方法进行阻塞，等待事件发生。
+   - 当有事件发生时，通过调用 Selector 的 selectedKeys() 方法获取到发生事件的 SelectionKey 集合。
+   - 遍历SelectionKey集合，根据事件类型进行相应的处理。
+
+3. 使用 `java.nio.channels.Selector` 类和 `java.nio.channels.ServerSocketChannel` 类：这种方式主要用于实现基于 NIO 的服务器。具体步骤如下：
+   - 创建 Selector 对象。
+   - 创建ServerSocketChannel对象，并将其绑定到指定的端口上。
+   - 将ServerSocketChannel设置为非阻塞模式，并将其注册到Selector上。
+   - 调用Selector的select()方法进行阻塞，等待连接事件发生。
+   - 当有连接事件发生时，通过调用Selector的selectedKeys()方法获取到发生事件的SelectionKey集合。
+   - 遍历SelectionKey集合，根据事件类型进行相应的处理。
+
+以上是三种常用的实现IO多路复用的方式，在实际应用中可以根据具体的需求和场景选择合适的方式。
+
+#### redis 中的 IO 多路复用是怎么实现的?
+
+在 Redis 中，实现 IO 多路复用是通过使用事件驱动的网络库来实现的。Redis 使用了多个事件库，其中最常用的是基于 epoll 系统调用的事件库。
+
+具体来说，Redis 使用了以下几个关键组件来实现IO多路复用：
+
+1. 文件事件（File Event）：Redis 通过文件事件来处理网络 IO 操作。每个文件事件都与一个套接字（socket）关联，当套接字就绪时，相应的文件事件就会被触发。文件事件包含了读事件和写事件两种类型。
+
+2. 事件处理器（Event Loop）：事件处理器是 Redis 的核心组件，负责监听并处理文件事件。事件处理器使用 IO 多路复用技术来监听多个文件事件，一旦有就绪事件，就会调用相应的事件处理函数进行处理。事件处理器是 Redis 单线程模型的核心。
+
+3. 多路复用器（Multiplexer）：Redis 使用多路复用器来实现 IO 多路复用。多路复用器可以同时监听多个文件描述符，等待其中任何一个文件描述符变为可读或可写状态，从而实现对多个文件描述符的复用。
+
+4. epoll系统调用：在 Linux 系统上，Redis 使用 epoll 系统调用来实现 IO 多路复用。epoll 系统调用在内核中管理一组文件描述符，并通过监听这些文件描述符的状态变化来实现 IO 多路复用。
+
+Redis 的事件驱动模型可以保证高效的 IO 操作和响应速度，因为它可以在一个线程中同时处理多个客户端的请求，而无需为每个客户端创建一个线程。这种单线程的设计使得 Redis 能够高效地处理大量的并发请求，并且具有较低的系统开销。
+
+#### 简述 select，poll，epoll
+
+select、poll 和 epoll 都是用于实现 IO 多路复用的机制，常用于高并发的网络编程中。
+
+1. select：
+select 是最早的一种实现 IO 多路复用的机制，它通过 select 系统调用来监听多个文件描述符的状态变化。select 采用的是轮询的方式，即遍历所有的文件描述符，检查是否有 IO 事件发生。但是 select 有一些限制，其中最主要的是每次调用 select 时，都需要将所有的文件描述符集合传递给内核，而内核会返回就绪的文件描述符集合，这个过程会带来一定的开销。
+
+2. poll：
+poll 是在 select 的基础上进行改进的一种 IO 多路复用机制。与 select 相比，poll 的改进主要体现在解决了select的文件描述符集合大小限制问题。poll使用一个pollfd结构体的数组来保存待监听的文件描述符，每次调用poll时，只需要将这个数组传递给内核，内核会返回就绪的文件描述符集合。
+
+3. epoll：
+epoll 是 Linux 特有的一种高效的 IO 多路复用机制，它在 select 和 poll 的基础上进行了进一步的改进。epoll 使用了事件驱动的方式，当某个文件描述符就绪时，内核会通知应用程序，而不需要应用程序进行轮询。这样就避免了select和poll中需要遍历所有文件描述符的开销。另外，epoll使用了一个事件表来保存待监听的文件描述符，这个事件表在内核中维护，可以支持大量的并发连接。
+
+总结来说，select、poll 和 epoll 都是实现 IO 多路复用的机制，它们的主要区别在于实现方式和性能表现。在Linux系统中，由于epoll的高性能和可扩展性，一般推荐使用epoll来实现高并发的网络编程。
+
+#### Java 中 NIO 的三剑客是啥
+
+1. Java中的 NIO（New Input/Output）的三剑客是指 Selector、Channel 和 Buffer。
+
+   1. Selector（选择器）：用于检测一个或多个NIO Channel的状态是否处于可读、可写等事件，从而实现非阻塞IO操作。可以通过一个线程管理多个Channel，提高系统资源利用率。
+
+   2. Channel（通道）：类似于传统IO中的流，用于读取和写入数据。不同的是，Channel可以同时进行读写操作，而流只能单向操作。常见的Channel类型有FileChannel、SocketChannel、ServerSocketChannel和DatagramChannel等。
+
+   3. Buffer（缓冲区）：用于临时存储数据。在 NIO 中，数据读取和写入都是通过Buffer来进行的。Buffer提供了不同类型的缓冲区，如ByteBuffer、CharBuffer、ShortBuffer、IntBuffer、LongBuffer、FloatBuffer和DoubleBuffer等，用于存储不同类型的数据。
+
+   这三个组件共同协作，实现了高效的非阻塞 IO 操作。Selector 负责监听 Channel 的事件，Channel 负责读写数据，而Buffer则作为数据的中转站，存储和提供数据。
+
 4. **Reactor 设计模式**
 
-Redis基于Reactor模式开发了自己的网络事件处理器，称之为文件事件处理器(File Event Hanlder)。
+Redis 基于 Reactor 模式开发了自己的网络事件处理器，称之为文件事件处理器(File Event Hanlder)。
 
 - 纯内存访问，不需要访问磁盘
 
@@ -15106,7 +15212,7 @@ EXPLAIN  SELECT COUNT(1) FROM user;
 
 使用缓存的好处：当 MySQL 接收到客户端的查询 SQL 之后，仅仅只需要对其进行相应的权限验证之后，就会通过 Query Cache 来查找结果，甚至都不需要经过 Optimizer 模块进行执行计划的分析优化，更不需要发生任何存储引擎的交互.
 
-mysql 5.7支持内部缓存，8.0 之后已废弃
+mysql 5.7 支持内部缓存，8.0 之后已废弃
 
 mysql 缓存的限制
 
@@ -15120,6 +15226,22 @@ mysql 缓存的限制
 替代方案
 
 * 应用层组织缓存，最简单的是使用 redis，ehcached 等
+
+
+
+### 79、ORM 可以防止 SQL 注入攻击吗?
+
+ORM（对象关系映射）框架本身并不能完全防止 SQL 注入攻击，但它可以在一定程度上减少 SQL 注入的风险。下面是一些ORM框架如何帮助减少SQL注入攻击的方式：
+
+1. 参数化查询：ORM 框架通常会使用参数化查询来执行数据库操作，而不是直接将用户输入的数据拼接到SQL语句中。参数化查询可以将用户输入的数据作为参数传递给SQL语句，而不是将其直接嵌入到 SQL 语句中，从而避免了 SQL 注入攻击。
+
+2. 自动转义：一些 ORM 框架会自动对用户输入的数据进行转义，以确保输入数据中的特殊字符不会被误认为是SQL语句的一部分。这样可以防止恶意的SQL注入攻击。
+
+3. 输入验证和过滤：ORM 框架通常提供了输入验证和过滤的功能，可以对用户输入的数据进行检查和过滤，以确保输入的数据符合预期的格式和类型。这样可以防止一些常见的SQL注入攻击。
+
+尽管 ORM 框架可以提供一些保护机制来减少SQL注入攻击的风险，但仍然需要开发人员自己保证应用程序的安全性。开发人员应该遵循安全的编码实践，对用户输入的数据进行充分验证和过滤，以防止 SQL 注入攻击。
+
+
 
 
 
