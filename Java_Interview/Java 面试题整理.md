@@ -6838,7 +6838,7 @@ ZK 使用的序列化协议是 Jute，Jute 提供了 Record 接口。接口提�
 
 
 
-### **28、在 Zookeeper 中 Zxid **是什么，有什么作用？
+### 28、在 Zookeeper 中 Zxid 是什么，有什么作用？
 
 Zxid，也就是事务 id，为了保证事务的顺序一致性，ZooKeeper 采用了递增的事务 Zxid 来标识事务。proposal 都会加上了 Zxid。Zxid 是一个 64 位的数字，它高 32 位是 Epoch 用来标识朝代变化，比如每次选举 Epoch 都会加改变。低 32 位用于递增计数。
 
