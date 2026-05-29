@@ -62,7 +62,29 @@ kill -9 <pid>             # 强制结束
 
 阻塞 IO、非阻塞 IO、**IO 多路复用（select/poll/epoll）**、信号驱动 IO、异步 IO。
 
-- **epoll** 相比 select/poll：无 fd 数量限制、事件回调（不轮询全部）、O(1) 就绪通知，是 Nginx、Redis、Netty 高并发的基础。
+- **epoll** 相比 select/poll：无 fd 数量限制、事件回调（不轮询全部）、O(1) 就绪通知，是 Nginx、Redis、Netty 高并发的基础（详见 [32-操作系统](./32-操作系统.md)）。
+
+## 7. 负载与性能排查工具链 🔥（线上实战进阶）
+
+```bash
+uptime                    # load average 1/5/15 分钟负载，>核数说明繁忙
+vmstat 1                  # 看 r(运行队列) b(阻塞) si/so(换页) us/sy/wa(CPU 分布)
+iostat -x 1               # 看磁盘 %util(接近100%=IO瓶颈) await(IO延迟)
+mpstat -P ALL 1           # 每核 CPU，定位单核打满
+pidstat -u 1 -p <pid>     # 指定进程的 CPU/IO 明细
+sar -n DEV 1              # 网络流量
+```
+
+> **排障心法（USE 法）**：对每类资源(CPU/内存/磁盘/网络)看 **使用率(Utilization)、饱和度(Saturation)、错误(Errors)**。
+> - load 高但 CPU 不高 → 看 `vmstat` 的 `b` 列和 `iostat` 的 `await`，多半是 **IO 等待/磁盘瓶颈**。
+> - `wa`(iowait) 高 → 磁盘慢或换页；`sy`(内核态) 高 → 系统调用/上下文切换多。
+
+## 8. 关键参数与常见坑 ⭐
+
+- **文件句柄数**：`ulimit -n` 默认 1024，高并发服务必调大（`too many open files` 的根因），改 `/etc/security/limits.conf`。
+- **TIME_WAIT 堆积**：短连接高并发场景，`ss -s` 看连接状态分布；调 `net.ipv4.tcp_tw_reuse`、用长连接/连接池缓解（见 [16-计算机网络](./16-计算机网络.md)）。
+- **OOM Killer**：内存不足时内核杀进程，`dmesg | grep -i kill` 查是否被杀（容器里尤其常见，见 [26-云原生](./26-云原生.md) JVM 容器感知）。
+- **僵尸进程**：`ps` 看 `Z` 状态，父进程未 wait 子进程退出码所致。
 
 ---
 
@@ -72,3 +94,6 @@ kill -9 <pid>             # 强制结束
 - 实时看日志并过滤错误？→ `tail -f | grep`（第 3 题）。
 - CPU 100% 怎么定位到 Java 代码？→ top -Hp + jstack（第 4 题）。
 - epoll 比 select 强在哪？→ 无遍历、无上限、回调（第 6 题）。
+- load 高但 CPU 不高是什么原因？→ IO 等待/磁盘瓶颈，看 vmstat/iostat（第 7 题）。
+- `too many open files` 怎么解决？→ 调 `ulimit -n` 与 limits.conf（第 8 题）。
+- 进程莫名被杀怎么查？→ `dmesg` 看 OOM Killer（第 8 题）。

@@ -13,8 +13,11 @@
 
 ## 目录
 
+> 💡 时间紧张？先看 **[00 · 考前速查 / 高频 TOP 50](./00-考前速查.md)**，一页扫完最高频考点再按需深读。
+
 | 序号 | 专题 | 核心内容 |
 | --- | --- | --- |
+| 00 | [考前速查 / 高频 TOP 50](./00-考前速查.md) | 一页速查 + 答题黄金结构 + 进场心态 |
 | 01 | [Java 基础](./01-Java基础.md) | 语言特性、OOP、基本类型与装箱、`equals`/`hashCode`、异常、泛型、反射、IO/NIO、序列化 |
 | 02 | [Java 集合](./02-Java集合.md) | List/Set/Map 体系、`ArrayList`、`HashMap`、`ConcurrentHashMap`、红黑树、fail-fast |
 | 03 | [JVM](./03-JVM.md) | 运行时数据区、类加载、对象布局、GC 算法与收集器、调优、逃逸分析 |
@@ -56,6 +59,7 @@
 | 34 | [性能优化与压测](./34-性能优化与压测.md) | 指标体系、全链路压测、火焰图、JMH、Arthas、瓶颈定位与分层优化 |
 | 35 | [响应式编程](./35-响应式编程.md) | Reactor（Flux/Mono/背压）、WebFlux、线程模型、与虚拟线程对比 |
 | 36 | [AI 应用开发 / Spring AI](./36-AI应用开发.md) | RAG、向量库、Function Calling、Spring AI/LangChain4j、MCP、工程化落地 |
+| 37 | [手撕代码题](./37-手撕代码题.md) | 单例/阻塞队列/LRU/限流器/线程池/CompletableFuture 可默写实现 |
 
 ## 版权与说明
 
