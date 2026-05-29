@@ -51,6 +51,11 @@
 | 29 | [DDD 领域驱动设计](./29-DDD领域驱动设计.md) | 限界上下文、聚合根、充血模型、CQRS、与微服务关系 |
 | 30 | [分布式调度](./30-分布式调度.md) | 定时任务方案、XXL-JOB、ElasticJob、任务分片 |
 | 31 | [项目与软技能](./31-项目与软技能.md) | STAR 讲项目、技术选型、架构演进、事故复盘、软技能 |
+| 32 | [操作系统](./32-操作系统.md) | 进程/线程/协程、虚拟内存、Page Cache、零拷贝、epoll、CPU 缓存与内存屏障 |
+| 33 | [Kafka 专项](./33-Kafka.md) | 高吞吐原理、ISR/HW/LEO、acks、Exactly-Once、Rebalance、顺序与积压 |
+| 34 | [性能优化与压测](./34-性能优化与压测.md) | 指标体系、全链路压测、火焰图、JMH、Arthas、瓶颈定位与分层优化 |
+| 35 | [响应式编程](./35-响应式编程.md) | Reactor（Flux/Mono/背压）、WebFlux、线程模型、与虚拟线程对比 |
+| 36 | [AI 应用开发 / Spring AI](./36-AI应用开发.md) | RAG、向量库、Function Calling、Spring AI/LangChain4j、MCP、工程化落地 |
 
 ## 版权与说明
 
