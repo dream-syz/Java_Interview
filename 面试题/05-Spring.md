@@ -188,6 +188,29 @@ Spring 默认 `DEFAULT`（跟随数据库，MySQL 为 RR）。详见 [09-MySQL](
 
 ---
 
+## 八、源码视角（进阶）⭐
+
+### 18. `refresh()` 容器启动核心流程 ⭐
+
+`AbstractApplicationContext.refresh()` 是 Spring 启动的"总指挥"，关键步骤（按顺序）：
+
+1. `prepareRefresh`：准备环境、校验属性。
+2. `obtainFreshBeanFactory`：创建 `BeanFactory`，**加载 BeanDefinition**（解析配置/扫描注解，此时还没实例化 Bean）。
+3. `prepareBeanFactory`：设置类加载器、注册内置 Bean。
+4. `postProcessBeanFactory` / `invokeBeanFactoryPostProcessors`：执行 **BeanFactoryPostProcessor**（如 `@Configuration` 解析、`@ComponentScan`、占位符替换）。
+5. `registerBeanPostProcessors`：注册 **BeanPostProcessor**（AOP、`@Autowired` 处理器）。
+6. `initMessageSource` / `initApplicationEventMulticaster`：国际化、事件广播器。
+7. `onRefresh`：模板方法（Spring Boot 在此创建内嵌 Tomcat）。
+8. `registerListeners`：注册监听器。
+9. **`finishBeanFactoryInitialization`**：**实例化所有非懒加载单例 Bean**（核心，走 Bean 生命周期、三级缓存解决循环依赖）。
+10. `finishRefresh`：发布 `ContextRefreshedEvent`，启动完成。
+
+### 19. `getBean` 与三级缓存（源码层）⭐
+
+`doGetBean → getSingleton`（先查三级缓存）`→ createBean → doCreateBean`：实例化 → `addSingletonFactory`（放入三级缓存）→ `populateBean`（属性填充，触发依赖创建）→ `initializeBean`（初始化 + AOP 代理）→ 放入一级缓存。循环依赖通过三级缓存的 `ObjectFactory` 提前暴露（可能是代理）的早期引用解决，详见 [本文第 10 题](#10-spring-如何解决循环依赖-)。
+
+---
+
 ## 高频追问清单
 
 - 循环依赖为什么三级缓存而非两级？→ 为了 AOP 代理的早期暴露（本文 10）。

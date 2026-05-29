@@ -211,6 +211,40 @@ Tomcat 违背双亲委派以实现**应用隔离**：`Common → Catalina/Shared
 
 ---
 
+## 六、线上排障实战案例 🔥（资深加分）
+
+### 21. 案例：CPU 飙到 100%
+
+```bash
+top                       # 1. 找到 CPU 高的 Java 进程 pid
+top -Hp <pid>             # 2. 找到该进程内 CPU 高的线程 tid
+printf '%x\n' <tid>       # 3. 线程 id 转 16 进制
+jstack <pid> | grep <hex> -A 30   # 4. 在线程栈里定位到具体代码
+```
+
+常见根因：死循环、正则回溯、频繁 GC（GC 线程占 CPU）、序列化/反序列化热点。用 **Arthas `thread -n 3`** 一步到位看最忙线程，`profiler` 出火焰图。
+
+### 22. 案例：频繁 Full GC / 内存泄漏
+
+1. `jstat -gcutil <pid> 1000` 看 GC 频率和老年代增长速度。
+2. `-XX:+HeapDumpOnOutOfMemoryError` 自动 dump，或 `jmap -dump:format=b,file=a.hprof <pid>` 手动。
+3. **MAT** 打开 dump，看**支配树（Dominator Tree）**找占内存最大的对象，看 **GC Roots 引用链**找谁还在持有它（无法回收的根因）。
+
+典型泄漏：静态集合无限增长、`ThreadLocal` 未 remove（线程池）、缓存无淘汰、监听器未注销、连接未关闭。
+
+### 23. 案例：内存溢出的快速判断
+
+- `Java heap space` → 堆不够（泄漏 / 大对象 / 集合膨胀），dump 分析。
+- `Metaspace` → 类太多（动态代理/热部署泄漏）。
+- `unable to create new native thread` → 线程数超限（检查线程池配置 / 系统 `ulimit`）。
+- `Direct buffer memory` → 堆外内存（Netty/NIO）泄漏，查 `DirectByteBuffer`。
+
+### 24. 常用诊断工具一览
+
+`jps`/`jstat`/`jstack`/`jmap`/`jinfo`（JDK 自带）、**Arthas**（线上首选，动态诊断）、**MAT**（dump 分析）、**async-profiler**（火焰图）、Grafana/SkyWalking（见 [25-可观测性](./25-可观测性.md)）。
+
+---
+
 ## 高频追问清单
 
 - 一次 Full GC 频繁，怎么排查？→ GC 日志 + jstat 看晋升速率，dump 看老年代大对象/泄漏。
